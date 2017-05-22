@@ -87,5 +87,4 @@ export function createActionHandler<TState, TPayload>(action: {type:string} & ( 
     return {
         [action.type]: handler
     }
-
 }
