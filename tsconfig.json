@@ -6,7 +6,7 @@
         "sourceMap": true,
         "declaration": true,
         "outDir": "lib",
-        "declarationDir": "./",
+       
         "moduleResolution": "node"
     },
     "files": [
