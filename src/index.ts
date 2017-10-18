@@ -61,8 +61,11 @@ export function createReducer<TState>(initialState:Partial<TState>): Reducer<TSt
     var handlers: {[type:string]: ActionHandler<TState,any>} = {};
 
     var reducer: ReduxReducer<TState> = (state:TState, action:ReduxAction)=>{
-
-        return state;
+        const handler = handlers[action.type];
+        if(typeof handler === "function"){
+            state = Object.assign({}, handler(state, action));
+        }
+        return state || {} as TState;
     };
     
     var createHandler = (action: {name:string}, handler:  ActionHandler<TState,any> )=>{
