@@ -31,7 +31,7 @@ export type DispatchedAction<TState, TPayload> = Promise<void> & {
 }
 
 export function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload> ):DispatchedAction<TState, TPayload>{
-    var _resolve, _reject;
+    var _resolve:Function, _reject: Function;
     var p  = new Promise<void>((resolve,reject)=>{
         _resolve = resolve;
         _reject = reject;
@@ -55,7 +55,7 @@ export type Reducer<TState> = ReduxReducer<TState> & {
             action: (...args: any[])=> ActionPayload<TPayload>,
             handler: ActionHandler<TState,TPayload>
         )=>void;
-    createAction: <Func extends (...args:any[])=> TRet, TRet extends Action<TPayload> | AsyncAction<TPayload>  /*| Dispatch<TState> | Promise<Dispatch<TState>>*/ | DispatchedAction<TState>, TPayload>(type:string, func: Func) => Func;
+    createAction: <Func extends (...args:any[])=> TRet, TRet extends Action<TPayload> | AsyncAction<TPayload>  /*| Dispatch<TState> | Promise<Dispatch<TState>>*/ | DispatchedAction<TState, TPayload>, TPayload>(type:string, func: Func) => Func;
 };
 
 export function createReducer<TState>(initialState:Partial<TState>): Reducer<TState> {
