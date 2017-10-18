@@ -48,14 +48,14 @@ export function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload> ):Dispa
 export type ActionHandler<TState, TPayload> =  (state:TState, action:TPayload | Promise<TPayload>)=>TState;
 
 export type ActionPayload<TPayload> = ((...args:any[])=>ActionPayload<TPayload>) | Promise<TPayload> | TPayload
-
-export type Reducer<TState> = ReduxReducer<TState> & {
+export type ReducerExtension<TState> = {
     createHandler: <TPayload>(
             action: (...args: any[])=> ActionPayload<TPayload>,
             handler: ActionHandler<TState,TPayload>
         )=>void;
     createAction: <Func extends (...args:any[])=> TRet, TRet extends Action<TPayload> | AsyncAction<TPayload>  /*| Dispatch<TState> | Promise<Dispatch<TState>>*/ | DispatchedAction<TState, TPayload>, TPayload>(type:string, func: Func) => Func;
 };
+export type Reducer<TState> = ReduxReducer<TState> & ReducerExtension<TState>;
 
 export function createReducer<TState>(initialState:Partial<TState>): Reducer<TState> {
     var handlers: {[type:string]: ActionHandler<TState,any>} = {};

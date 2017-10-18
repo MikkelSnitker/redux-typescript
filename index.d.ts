@@ -17,8 +17,9 @@ export declare type DispatchedAction<TState, TPayload> = Promise<void> & {
 export declare function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload>): DispatchedAction<TState, TPayload>;
 export declare type ActionHandler<TState, TPayload> = (state: TState, action: TPayload | Promise<TPayload>) => TState;
 export declare type ActionPayload<TPayload> = ((...args: any[]) => ActionPayload<TPayload>) | Promise<TPayload> | TPayload;
-export declare type Reducer<TState> = ReduxReducer<TState> & {
+export declare type ReducerExtension<TState> = {
     createHandler: <TPayload>(action: (...args: any[]) => ActionPayload<TPayload>, handler: ActionHandler<TState, TPayload>) => void;
     createAction: <Func extends (...args: any[]) => TRet, TRet extends Action<TPayload> | AsyncAction<TPayload> | DispatchedAction<TState, TPayload>, TPayload>(type: string, func: Func) => Func;
 };
+export declare type Reducer<TState> = ReduxReducer<TState> & ReducerExtension<TState>;
 export declare function createReducer<TState>(initialState: Partial<TState>): Reducer<TState>;
