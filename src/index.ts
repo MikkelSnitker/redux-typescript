@@ -6,7 +6,6 @@ import {
     combineReducers as ReduxCombineReducers
 } from 'redux'
  
-
 export type StoreCreator = ReduxStoreCreator;
 export const createStore = ReduxCreateStore;
 export const combineReducers = ReduxCombineReducers;

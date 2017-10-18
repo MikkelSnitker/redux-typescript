@@ -6,7 +6,8 @@
         "sourceMap": true,
         "declaration": true,
         "outDir": "lib",
-        "declarationDir": "./"
+        "declarationDir": "./",
+        "moduleResolution": "node"
     },
     "files": [
         "./src/index.ts"
