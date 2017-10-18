@@ -1,9 +1,15 @@
-import {Reducer as ReduxReducer, Action as ReduxAction, createStore as ReduxCreateStore, StoreCreator as ReduxStoreCreator} from 'redux'
+import {
+    Reducer as ReduxReducer, 
+    Action as ReduxAction, 
+    createStore as ReduxCreateStore, 
+    StoreCreator as ReduxStoreCreator,
+    combineReducers as ReduxCombineReducers
+} from 'redux'
  
 
 export type StoreCreator = ReduxStoreCreator;
 export const createStore = ReduxCreateStore;
-
+export const combineReducers = ReduxCombineReducers;
 export type Partial<T> = {
     [P in keyof T]?: T[P];
 };
