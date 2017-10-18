@@ -1,27 +1,23 @@
-import { Reducer, Action as ReduxAction } from 'redux';
+import { Reducer as ReduxReducer, StoreCreator as ReduxStoreCreator } from 'redux';
+export declare type StoreCreator = ReduxStoreCreator;
+export declare const createStore: ReduxStoreCreator;
 export declare type Partial<T> = {
     [P in keyof T]?: T[P];
 };
-export interface Action<T> extends ReduxAction {
-    type: string;
-    payload: T;
-    error?: boolean;
-}
-export interface ActionHandlers<TState> {
-    [key: string]: (state: TState, action: Action<any>) => TState;
-}
-export declare function createActionHandlers<TState>(handlers: ActionHandlers<TState>, initialState: Partial<TState>, fallback?: (state: TState, action: any) => TState): Reducer<TState>;
-export interface Async<R> {
-    (dispatch: any, getState: any): Promise<R>;
-}
-export interface Func<R> {
-    (...args: any[]): R | Async<R>;
-}
-export declare function createAction<TFunc, TAction>(type: string, func: TFunc & (Func<TAction>)): TFunc & {
-    type: string;
+export declare type Dispatch<TPayload> = (dispatch: <TAction>(action: Action<TAction>) => Promise<any>, getState: () => TPayload) => void | Promise<void>;
+export declare type Action<TPayload> = {
+    type?: string;
+    payload: TPayload;
 };
-export declare function createActionHandler<TState, TPayload>(action: {
-    type: string;
-} & ((...args: any[]) => TPayload), handler: (state: TState, action: Action<TPayload>) => TState): {
-    [x: string]: (state: TState, action: Action<TPayload>) => TState;
+export declare type AsyncAction<TPayload> = Promise<Action<TPayload>>;
+export declare type DispatchedAction<TState, TPayload> = Promise<void> & {
+    dispatch: Dispatch<TPayload>;
 };
+export declare function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload>): DispatchedAction<TState, TPayload>;
+export declare type ActionHandler<TState, TPayload> = (state: TState, action: TPayload | Promise<TPayload>) => TState;
+export declare type ActionPayload<TPayload> = ((...args: any[]) => ActionPayload<TPayload>) | Promise<TPayload> | TPayload;
+export declare type Reducer<TState> = ReduxReducer<TState> & {
+    createHandler: <TPayload>(action: (...args: any[]) => ActionPayload<TPayload>, handler: ActionHandler<TState, TPayload>) => void;
+    createAction: <Func extends (...args: any[]) => TRet, TRet extends Action<TPayload> | AsyncAction<TPayload> | DispatchedAction<TState>, TPayload>(type: string, func: Func) => Func;
+};
+export declare function createReducer<TState>(initialState: Partial<TState>): Reducer<TState>;
