@@ -1,6 +1,7 @@
-import { Reducer as ReduxReducer, StoreCreator as ReduxStoreCreator, combineReducers as ReduxCombineReducers } from 'redux';
-export declare type StoreCreator = ReduxStoreCreator;
-export declare const createStore: ReduxStoreCreator;
+import { Reducer as ReduxReducer, combineReducers as ReduxCombineReducers, StoreEnhancer, Store } from 'redux';
+export declare function createStore<S>(reducer: ReduxReducer<{
+    [key in keyof S]: ReduxReducer<S[key]>;
+}>, enhancer?: StoreEnhancer<S>): Store<S>;
 export declare const combineReducers: typeof ReduxCombineReducers;
 export declare type Partial<T> = {
     [P in keyof T]?: T[P];
