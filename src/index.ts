@@ -71,27 +71,17 @@ export type ReducerExtension<TState> = {
 
 export type Reducer<TState> = ReduxReducer<TState> & ReducerExtension<TState>;
 
-export type Test<T> = (this: ActionContext, ...args:any[])=>any & T;
-
-
 export type FuncContext<TFunc> = TFunc &  {
     (this:ActionContext,...args: any[]):any;
 }
 
-
-
-
-
-export function createAction1<Func>(type: string, func: FuncContext<Func> ) {
+export function createAction<Func>(type: string, func: FuncContext<Func> ) {
   
-    return null as Func;
+    return Object.defineProperty(func, "name", { value: type }) as Func;
         
 //    return (Object.defineProperty(func, "name", { value: type }) );
 };
 
-export const createAction: ActionCreator = (type: string, func: (...args: any[]) => any)=> {
-    return Object.defineProperty(func, "name", { value: type });
-};
 
 export function createReducer<TState>(initialState: Partial<TState>): Reducer<TState> {
     var handlers: { [type: string]: ActionHandler<TState, any> } = {};
