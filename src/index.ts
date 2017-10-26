@@ -60,7 +60,7 @@ export function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload>): Dispa
 
 export type ActionHandler<TState, TPayload> = (state: TState, action: Action<TPayload>) => TState;
 export type ActionPayload<TPayload> = ((...args: any[]) => ActionPayload<TPayload>) | Promise<TPayload> | TPayload
-export type ActionCreator = <Func extends (this:ActionContext, ...args: any[]) => TRet, TRet extends TPayload, TPayload>(type: string, func: Func) => Func;
+export type ActionCreator = <Func1 extends (...args: any[]) => TRet, Func extends (this:ActionContext, ...args: any[]) => TRet, TRet extends TPayload, TPayload>(type: string, func: Func) => Func1;
 export type ReducerExtension<TState> = {
     createHandler: <TPayload>(
         action: (...args: any[]) => ActionPayload<TPayload>,
@@ -70,6 +70,24 @@ export type ReducerExtension<TState> = {
 };
 
 export type Reducer<TState> = ReduxReducer<TState> & ReducerExtension<TState>;
+
+export type Test<T> = (this: ActionContext, ...args:any[])=>any & T;
+
+
+export type FuncContext<TFunc> = TFunc &  {
+    (this:ActionContext,...args: any[]):any;
+}
+
+
+
+
+
+export function createAction1<Func>(type: string, func: FuncContext<Func> ) {
+  
+    return null as Func;
+        
+//    return (Object.defineProperty(func, "name", { value: type }) );
+};
 
 export const createAction: ActionCreator = (type: string, func: (...args: any[]) => any)=> {
     return Object.defineProperty(func, "name", { value: type });

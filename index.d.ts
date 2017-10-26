@@ -21,11 +21,16 @@ export declare type DispatchedAction<TState, TPayload> = Promise<void> & {
 export declare function dispatchedAction<TState, TPayload>(f: Dispatch<TPayload>): DispatchedAction<TState, TPayload>;
 export declare type ActionHandler<TState, TPayload> = (state: TState, action: Action<TPayload>) => TState;
 export declare type ActionPayload<TPayload> = ((...args: any[]) => ActionPayload<TPayload>) | Promise<TPayload> | TPayload;
-export declare type ActionCreator = <Func extends (this: ActionContext, ...args: any[]) => TRet, TRet extends TPayload, TPayload>(type: string, func: Func) => Func;
+export declare type ActionCreator = <Func1 extends (...args: any[]) => TRet, Func extends (this: ActionContext, ...args: any[]) => TRet, TRet extends TPayload, TPayload>(type: string, func: Func) => Func1;
 export declare type ReducerExtension<TState> = {
     createHandler: <TPayload>(action: (...args: any[]) => ActionPayload<TPayload>, handler: ActionHandler<TState, TPayload>) => void;
     createAction: ActionCreator;
 };
 export declare type Reducer<TState> = ReduxReducer<TState> & ReducerExtension<TState>;
+export declare type Test<T> = (this: ActionContext, ...args: any[]) => any & T;
+export declare type FuncContext<TFunc> = TFunc & {
+    (this: ActionContext, ...args: any[]): any;
+};
+export declare function createAction1<Func>(type: string, func: FuncContext<Func>): Func;
 export declare const createAction: ActionCreator;
 export declare function createReducer<TState>(initialState: Partial<TState>): Reducer<TState>;
